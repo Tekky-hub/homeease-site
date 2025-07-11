@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Q&A Chatbot - HomeEase</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    ::-webkit-scrollbar {
+      display: none;
+    }
+  </style>
+</head>
+<body class="bg-gray-100 text-gray-900 flex flex-col h-screen">
+
+  <!-- Header -->
+  <header class="bg-white shadow px-6 py-4 flex justify-between items-center">
+    <div class="text-2xl font-bold text-blue-600">HomeEase</div>
+    <nav class="hidden md:flex space-x-6">
+      <a href="index.html" class="hover:text-blue-500">Home</a>
+      <a href="listings.html" class="hover:text-blue-500">Listings</a>
+      <a href="contact.html" class="hover:text-blue-500">Contact</a>
+      <a href="chatbot.html" class="text-blue-600 font-semibold">Q&A</a>
+    </nav>
+  </header>
+
+  <!-- Chat Window -->
+  <main class="flex-1 overflow-hidden">
+    <div id="chatWindow" class="h-full p-6 overflow-y-auto space-y-4 max-w-2xl mx-auto">
+      <div class="text-sm text-center text-gray-500">Ask me anything about rentals or booking.</div>
+
+      <!-- Bot Intro Message -->
+      <div class="bg-gray-200 p-4 rounded-xl max-w-[80%]">
+        👋 Hi! I’m your rental assistant. Ask me about pricing, locations, bookings, or anything else.
+      </div>
+    </div>
+  </main>
+
+  <!-- Input Box -->
+  <form id="chatForm" class="bg-white p-4 flex gap-4 border-t max-w-2xl mx-auto w-full">
+    <input id="userInput" type="text" placeholder="Type your question..." class="flex-1 p-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400" required />
+    <button class="bg-blue-600 text-white px-4 rounded hover:bg-blue-700">Send</button>
+  </form>
+
+  <!-- Footer -->
+  <footer class="text-center text-sm text-gray-500 py-4 border-t">
+    &copy; 2025 HomeEase Rentals. All rights reserved.
+  </footer>
+
+  <!-- Script -->
+  <script>
+    const chatForm = document.getElementById('chatForm');
+    const chatWindow = document.getElementById('chatWindow');
+    const userInput = document.getElementById('userInput');
+
+    const fakeAnswers = {
+      "price": "Prices start at ₦150,000/month depending on location and property type.",
+      "booking": "To book a property, go to the listing and click 'View Details', then use the Contact button.",
+      "location": "We have listings in Lagos, Abuja, Port Harcourt, and more.",
+      "sign up": "Click the 'Sign Up' button on the top right to create an account.",
+      "listings": "Visit the Listings page to explore available properties."
+    };
+
+    chatForm.onsubmit = (e) => {
+      e.preventDefault();
+      const question = userInput.value.trim();
+      if (!question) return;
+
+      // Add user message
+      const userMsg = document.createElement('div');
+      userMsg.className = "bg-blue-100 p-4 rounded-xl self-end max-w-[80%]";
+      userMsg.innerText = question;
+      chatWindow.appendChild(userMsg);
+
+      // Add bot reply after short delay
+      setTimeout(() => {
+        const botMsg = document.createElement('div');
+        botMsg.className = "bg-gray-200 p-4 rounded-xl max-w-[80%]";
+        const lower = question.toLowerCase();
+        let answer = "Sorry, I don't know that yet. Try asking about price, booking, or location.";
+        for (let key in fakeAnswers) {
+          if (lower.includes(key)) {
+            answer = fakeAnswers[key];
+            break;
+          }
+        }
+        botMsg.innerText = answer;
+        chatWindow.appendChild(botMsg);
+        chatWindow.scrollTop = chatWindow.scrollHeight;
+      }, 500);
+
+      userInput.value = "";
+      chatWindow.scrollTop = chatWindow.scrollHeight;
+    };
+  </script>
+  
+  
+
+</body>
+</html>
